@@ -27,28 +27,28 @@
 
 #import <UIKit/UIKit.h>
 
-/** The RMConfiguration object is a shared instance of the configuration for the library. */
+/** The RMConfiguration object is a shared instance of the sharedConfiguration for the library. */
 @interface RMConfiguration : NSObject
 
 /** @name Accessing the Configuration */
 
-/** Access the shared instance of the configuration. 
-*   @return The shared configuration instance. */
-+ (instancetype)configuration;
+/** Access the shared instance of the sharedConfiguration.
+*   @return The shared sharedConfiguration instance. */
++ (instancetype)sharedConfiguration;
 
 - (RMConfiguration *)initWithPath:(NSString *)path;
 
 /** @name Authorizing Access */
 
-/** A Mapbox API access token. Obtain an access token on your [Mapbox account page](https://www.mapbox.com/account/apps/). Setting an access token will use Mapbox's `v4` API, otherwise `v3` will be used. At a future date, `v3` support will be phased out of the library. 
+/** A Mapbox API access token. Obtain an access token on your [Mapbox account page](https://www.mapbox.com/account/apps/). Setting an access token will use Mapbox's `v4` API, otherwise `v3` will be used. At a future date, `v3` support will be phased out of the library.
 *
 *   @warning Use of the Mapbox `v4` API is currently not supported. */
 @property (nonatomic, readonly, retain) NSString *accessToken;
 
 /** @name Cache Configuration */
 
-/** Access the disk- and memory-based cache configuration. 
-*   @return A dictionary containing the cache configuration. */
+/** Access the disk- and memory-based cache sharedConfiguration.
+*   @return A dictionary containing the cache sharedConfiguration. */
 - (NSDictionary *)cacheConfiguration;
 
 /** @name Using a Custom User Agent */

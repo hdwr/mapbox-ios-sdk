@@ -97,25 +97,25 @@
 - (id)initWithMapboxMarkerImage:(NSString *)symbolName tintColor:(UIColor *)color size:(RMMarkerMapboxImageSize)size
 {
     NSString *sizeString = nil;
-    
+
     switch (size)
     {
         case RMMarkerMapboxImageSizeSmall:
             sizeString = @"small";
             break;
-        
+
         case RMMarkerMapboxImageSizeMedium:
         default:
             sizeString = @"medium";
             break;
-        
+
         case RMMarkerMapboxImageSizeLarge:
             sizeString = @"large";
             break;
     }
-    
+
     NSString *colorHex = nil;
-    
+
     if (color)
     {
         CGFloat white, red, green, blue, alpha;
@@ -129,7 +129,7 @@
             colorHex = [NSString stringWithFormat:@"%02lx%02lx%02lx", (unsigned long)(white * 255), (unsigned long)(white * 255), (unsigned long)(white * 255)];
         }
     }
-    
+
     return [self initWithMapboxMarkerImage:symbolName tintColorHex:colorHex sizeString:sizeString];
 }
 
@@ -140,27 +140,27 @@
 
 - (id)initWithMapboxMarkerImage:(NSString *)symbolName tintColorHex:(NSString *)colorHex sizeString:(NSString *)sizeString
 {
-    NSString *version     = ([[RMConfiguration configuration] accessToken] ? @"v4" : @"v3");
-    NSString *accessToken = ([[RMConfiguration configuration] accessToken] ? [@"?access_token=" stringByAppendingString:[[RMConfiguration configuration] accessToken]] : @"");
+    NSString *version     = ([[RMConfiguration sharedConfiguration] accessToken] ? @"v4" : @"v3");
+    NSString *accessToken = ([[RMConfiguration sharedConfiguration] accessToken] ? [@"?access_token=" stringByAppendingString:[[RMConfiguration sharedConfiguration] accessToken]] : @"");
     BOOL useRetina        = ([[UIScreen mainScreen] scale] > 1.0);
 
     NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://api.tiles.mapbox.com/%@/marker/pin-%@%@%@%@.png%@",
                                                version,
-                                               (sizeString ? [sizeString substringToIndex:1] : @"m"), 
+                                               (sizeString ? [sizeString substringToIndex:1] : @"m"),
                                                (symbolName ? [@"-" stringByAppendingString:symbolName] : @""),
                                                (colorHex   ? [@"+" stringByAppendingString:[colorHex stringByReplacingOccurrencesOfString:@"#" withString:@""]] : @"+ff0000"),
                                                (useRetina  ? @"@2x" : @""),
                                                accessToken]];
 
     UIImage *image = nil;
-    
+
     NSString *cachePath = [NSString stringWithFormat:@"%@/%@", kCachesPath, [imageURL lastPathComponent]];
-    
+
     if ((image = [UIImage imageWithData:[NSData dataWithContentsOfFile:cachePath] scale:(useRetina ? 2.0 : 1.0)]) && image)
         return [self initWithUIImage:image];
-    
+
     [[NSFileManager defaultManager] createFileAtPath:cachePath contents:[NSData brandedDataWithContentsOfURL:imageURL] attributes:nil];
-    
+
     return [self initWithUIImage:[UIImage imageWithData:[NSData dataWithContentsOfFile:cachePath] scale:(useRetina ? 2.0 : 1.0)]];
 }
 

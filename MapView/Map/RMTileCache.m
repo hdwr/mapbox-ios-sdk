@@ -54,7 +54,7 @@
     NSTimeInterval _expiryPeriod;
 
     dispatch_queue_t _tileCacheQueue;
-    
+
     id <RMTileSource>_activeTileSource;
     NSOperationQueue *_backgroundFetchQueue;
 }
@@ -71,12 +71,12 @@
 
     _memoryCache = nil;
     _expiryPeriod = period;
-    
+
     _backgroundCacheDelegate = nil;
     _activeTileSource = nil;
     _backgroundFetchQueue = nil;
 
-    id cacheCfg = [[RMConfiguration configuration] cacheConfiguration];
+    id cacheCfg = [[RMConfiguration sharedConfiguration] cacheConfiguration];
     if (!cacheCfg)
         cacheCfg = [NSArray arrayWithObjects:
                     [NSDictionary dictionaryWithObject: @"memory-cache" forKey: @"type"],
@@ -107,7 +107,7 @@
 
         }
         @catch (NSException * e) {
-            RMLog(@"*** configuration error: %@", [e reason]);
+            RMLog(@"*** sharedConfiguration error: %@", [e reason]);
         }
     }
 
@@ -126,7 +126,7 @@
 {
     if (self.isBackgroundCaching)
         [self cancelBackgroundCache];
-    
+
     dispatch_barrier_sync(_tileCacheQueue, ^{
          _memoryCache = nil;
          _tileCaches = nil;
@@ -196,7 +196,7 @@
     dispatch_sync(_tileCacheQueue, ^{
 
         for (id <RMTileCache> cache in _tileCaches)
-        {	
+        {
             if ([cache respondsToSelector:@selector(addImage:forTile:withCacheKey:)])
                 [cache addImage:image forTile:tile withCacheKey:aCacheKey];
         }
@@ -472,7 +472,7 @@ static NSMutableDictionary *predicateValues = nil;
         }
     }
 
-    RMLog(@"Memory cache configuration: {capacity : %lu}", (unsigned long)capacity);
+    RMLog(@"Memory cache sharedConfiguration: {capacity : %lu}", (unsigned long)capacity);
 
 	return [[RMMemoryCache alloc] initWithCapacity:capacity];
 }
@@ -572,7 +572,7 @@ static NSMutableDictionary *predicateValues = nil;
     if (expiryPeriodNumber != nil)
         _expiryPeriod = [expiryPeriodNumber doubleValue];
 
-    RMLog(@"Database cache configuration: {capacity : %lu, strategy : %@, minimalPurge : %lu, expiryPeriod: %.0f, useCacheDir : %@}", (unsigned long)capacity, strategyStr, (unsigned long)minimalPurge, _expiryPeriod, useCacheDir ? @"YES" : @"NO");
+    RMLog(@"Database cache sharedConfiguration: {capacity : %lu, strategy : %@, minimalPurge : %lu, expiryPeriod: %.0f, useCacheDir : %@}", (unsigned long)capacity, strategyStr, (unsigned long)minimalPurge, _expiryPeriod, useCacheDir ? @"YES" : @"NO");
 
     RMDatabaseCache *dbCache = [[RMDatabaseCache alloc] initUsingCacheDir:useCacheDir];
     [dbCache setCapacity:capacity];

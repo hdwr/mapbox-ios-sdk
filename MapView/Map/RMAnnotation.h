@@ -33,9 +33,9 @@
 
 @class RMMapView, RMMapLayer, RMQuadTreeNode;
 
-/** An RMAnnotation defines a container for annotation data to be placed on a map. At a future point in time, depending on map use, a visible layer may be requested and displayed for the annotation. The layer is provided by an RMMapView's delegate when first needed for display. 
+/** An RMAnnotation defines a container for annotation data to be placed on a map. At a future point in time, depending on map use, a visible layer may be requested and displayed for the annotation. The layer is provided by an RMMapView's delegate when first needed for display.
 *
-*   Subclasses of RMAnnotation such as RMPointAnnotation, RMPolylineAnnotation, and RMPolygonAnnotation are useful for simple needs such as easily putting points and shapes onto a map view. They manage their own layer and don't require configuration in the map view delegate in order to be displayed. */
+*   Subclasses of RMAnnotation such as RMPointAnnotation, RMPolylineAnnotation, and RMPolygonAnnotation are useful for simple needs such as easily putting points and shapes onto a map view. They manage their own layer and don't require sharedConfiguration in the map view delegate in order to be displayed. */
 @interface RMAnnotation : NSObject
 {
     CLLocationCoordinate2D coordinate;
@@ -116,7 +116,7 @@
 
 /** @name Filtering Types of Annotations */
 
-/** Whether the annotation is related to display of the user's location. Useful for filtering purposes when providing annotation layers in the delegate. 
+/** Whether the annotation is related to display of the user's location. Useful for filtering purposes when providing annotation layers in the delegate.
 *
 *   There are three possible user location annotations, depending on current conditions: the user dot, the pulsing halo, and the accuracy circle. All may have custom layers provided, but if you only want to customize the user dot, you should check that the annotation is a member of the RMUserLocation class in order to ensure that you are altering only the correct annotation layer. */
 @property (nonatomic, readonly) BOOL isUserLocationAnnotation;
@@ -125,17 +125,17 @@
 
 /** @name Initializing Annotations */
 
-/** Create and initialize an annotation. 
-*   @param aMapView The map view on which to place the annotation. 
-*   @param aCoordinate The location for the annotation. 
-*   @param aTitle The annotation's title. 
+/** Create and initialize an annotation.
+*   @param aMapView The map view on which to place the annotation.
+*   @param aCoordinate The location for the annotation.
+*   @param aTitle The annotation's title.
 *   @return An annotation object, or `nil` if an annotation was unable to be created. */
 + (instancetype)annotationWithMapView:(RMMapView *)aMapView coordinate:(CLLocationCoordinate2D)aCoordinate andTitle:(NSString *)aTitle;
 
-/** Initialize an annotation. 
-*   @param aMapView The map view on which to place the annotation. 
+/** Initialize an annotation.
+*   @param aMapView The map view on which to place the annotation.
 *   @param aCoordinate The location for the annotation.
-*   @param aTitle The annotation's title. 
+*   @param aTitle The annotation's title.
 *   @return An initialized annotation object, or `nil` if an annotation was unable to be initialized. */
 - (id)initWithMapView:(RMMapView *)aMapView coordinate:(CLLocationCoordinate2D)aCoordinate andTitle:(NSString *)aTitle;
 
@@ -149,7 +149,7 @@
 /** Whether the annotation is currently on the screen, regardless if clustered or not. */
 @property (nonatomic, readonly) BOOL isAnnotationOnScreen;
 
-/** Whether the annotation is within a certain screen bounds. 
+/** Whether the annotation is within a certain screen bounds.
 *   @param bounds A given screen bounds. */
 - (BOOL)isAnnotationWithinBounds:(CGRect)bounds;
 
