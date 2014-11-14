@@ -92,7 +92,7 @@
     [_queue inDatabase:^(FMDatabase *db) {
         [[db executeQuery:@"PRAGMA synchronous=OFF"] close];
         [[db executeQuery:@"PRAGMA journal_mode=OFF"] close];
-        [[db executeQuery:@"PRAGMA cache-size=100"] close];
+        [[db executeQuery:@"PRAGMA cache_size=100"] close];
         [[db executeQuery:@"PRAGMA count_changes=OFF"] close];
         [db executeUpdate:@"CREATE TABLE IF NOT EXISTS ZCACHE (tile_hash INTEGER NOT NULL, cache_key VARCHAR(25) NOT NULL, last_used DOUBLE NOT NULL, data BLOB NOT NULL)"];
         [db executeUpdate:@"CREATE UNIQUE INDEX IF NOT EXISTS main_index ON ZCACHE(tile_hash, cache_key)"];
@@ -133,7 +133,7 @@
 
     _tileCount = [self countTiles];
 
-	return self;	
+	return self;
 }
 
 - (id)initUsingCacheDir:(BOOL)useCacheDir
@@ -173,7 +173,7 @@
 - (void)setExpiryPeriod:(NSTimeInterval)theExpiryPeriod
 {
     _expiryPeriod = theExpiryPeriod;
-    
+
     srand((unsigned int)time(NULL));
 }
 
@@ -345,7 +345,7 @@
     _tileCount = [self countTiles];
 }
 
-- (void)removeAllCachedImages 
+- (void)removeAllCachedImages
 {
     RMLog(@"removing all tiles from the db cache");
 
